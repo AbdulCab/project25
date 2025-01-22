@@ -1,0 +1,23 @@
+ol
+  - @pokemons.each_with_index do |pokemon|
+    li
+      h2= "#{pokemon['name']}"
+      img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/#{pokemon['id']}.png" alt=""/
+      ul
+        li
+          = "Type 1: #{pokemon['type1']}"
+        li
+          = "Type 2: #{pokemon['type2'] || 'N/A'}"
+        li
+          = "HP: #{pokemon['hp']}"
+        li
+          = "Attack: #{pokemon['attack']}"
+        li
+          = "Defense: #{pokemon['defense']}"
+        li
+          = "Sp. Attack: #{pokemon['sp_attack']}"
+        li
+          = "Sp. Defense: #{pokemon['sp_defense']}"
+        li
+          = "Speed: #{pokemon['speed']}"
+        br

@@ -1,2 +1,30 @@
-h1 Alla pokemon 
-
+    h1 List of Pokémon
+    ul
+      - @pokemons.each do |pokemon|
+        li
+          strong= pokemon['name']
+          ul
+            li
+              strong Type 1:
+              = pokemon['type1']
+            li
+              strong Type 2:
+              = pokemon['type2'] || 'N/A'
+            li
+              strong HP:
+              = pokemon['hp']
+            li
+              strong Attack:
+              = pokemon['attack']
+            li
+              strong Defense:
+              = pokemon['defense']
+            li
+              strong Sp. Attack:
+              = pokemon['sp_attack']
+            li
+              strong Sp. Defense:
+              = pokemon['sp_defense']
+            li
+              strong Speed:
+              = pokemon['speed']
