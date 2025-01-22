@@ -2,7 +2,8 @@ ol
   - @pokemons.each_with_index do |pokemon|
     li
       h2= "#{pokemon['name']}"
-      img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/#{pokemon['id']}.png" alt=""/
+      img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/#{pokemon['id']}.png" alt=""/
+      //img/Pokeimg/#{pokemon['name']}/#{pokemon['name']}_new.png
       ul
         li
           = "Type 1: #{pokemon['type1']}"
