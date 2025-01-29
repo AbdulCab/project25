@@ -4,15 +4,15 @@ html lang="en"
         meta charset="UTF-8"/
         meta name="viewport" content="width=device-width, initial-scale=1.0"/
         title Document
-        link rel="stylesheet" href="/css/styles.css"/
+        link rel="stylesheet" href="/css/style.css"/
+        script src="/js/search.js" defer
     body 
 
         nav 
+            a href="/" Home
+            a href="/search" Search
+            input#search-box type="text" placeholder="Search Pokémon..."
+            ul#search-results
 
-            ol 
-                h1 Pokedex
-            div#search-container
-            input#search-input type="text" placeholder="Sök Pokémon..." oninput="searchPokemon()"
-            div#search-results
         section 
             ==yield

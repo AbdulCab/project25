@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title Search Pokémon
+    script src="https://code.jquery.com/jquery-3.6.0.min.js"
+  body
+    h1 Search for a Pokémon
+    input#search-box type="text" placeholder="Type a Pokémon name..."
+    ul#results
+
+    script
+      | $(document).ready(function() {
+      |   $('#search-box').on('input', function() {
+      |     let query = $(this).val();
+      |     if (query.length > 0) {
+      |       $.getJSON('/search_pokemon', { q: query }, function(data) {
+      |         let resultsList = $('#results');
+      |         resultsList.empty();
+      |         data.forEach(pokemon => {
+      |           resultsList.append(`<li><a href='/pokedex/${pokemon.name}'>${pokemon.name}</a></li>`);
+      |         });
+      |       });
+      |     } else {
+      |       $('#results').empty();
+      |     }
+      |   });
+      | });

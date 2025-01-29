@@ -71,3 +71,46 @@
     color: black;
     text-decoration: none;
   }
+
+  #search-results {
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    background: white;
+    width: 250px;
+    border: 1px solid #ddd;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  #search-results li {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  #search-results li:hover {
+    background: #f0f0f0;
+  }
+  
+  #search-results li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+  
+  .search-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .search-type {
+    font-size: 12px;
+    color: #666;
+    margin-left: 5px;
+  }
+  
