@@ -27,7 +27,7 @@ get('/pokedex/:name') do
 end
 
 get '/search' do
-  slim :search
+  slim(:search)
 end
 
 # Route to return filtered Pokémon in JSON format
@@ -35,24 +35,22 @@ get '/search_pokemon' do
   query = params[:q].to_s.downcase.strip
 
   pokemons = db.execute <<-SQL, ["%#{query}%"]
-    SELECT "Pokemons".id, "Pokemons".name, 
+    SELECT Pokemons.id, Pokemons.name, 
            t1.name AS type1, 
            t2.name AS type2 
-    FROM "Pokemons"
-    LEFT JOIN types t1 ON "Pokemons".type1 = t1.id
-    LEFT JOIN types t2 ON "Pokemons".type2 = t2.id
-    WHERE LOWER("Pokemons".name) LIKE ?
+    FROM Pokemons
+    LEFT JOIN types t1 ON Pokemons.type1 = t1.id
+    LEFT JOIN types t2 ON Pokemons.type2 = t2.id
+    WHERE LOWER(Pokemons.name) LIKE ?
   SQL
 
-  # Generate dynamic image URL based on Pokémon ID
-
-  pokemon.each do |pokemon|
+  # Generate dynamic image URL and format types correctly
+  pokemons.each do |pokemon|
     pokemon["image_url"] = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/#{pokemon['id']}.png"
     pokemon["types"] = pokemon["type2"] ? "#{pokemon['type1']} / #{pokemon['type2']}" : pokemon["type1"]
   end
-  
+
   content_type :json
   pokemons.to_json
 end
-
 
