@@ -8,7 +8,11 @@ html lang="en"
     body 
 
         nav 
+
             ol 
-                h1 show
+                h1 Pokedex
+            div#search-container
+            input#search-input type="text" placeholder="Sök Pokémon..." oninput="searchPokemon()"
+            div#search-results
         section 
             ==yield
