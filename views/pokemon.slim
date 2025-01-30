@@ -1,0 +1,75 @@
+section.pokemon-page
+  .container
+    / ======= Left Side: Pokémon Image & Basic Info =======
+    .left-column
+      .pokemon-image
+        img src=@pokemon["image_url"] alt=@pokemon["name"]
+
+      .pokemon-details
+        h1.pokemon-name = @pokemon["name"]
+
+        .pokemon-types
+          span class="pokemon-type type-#{@pokemon["type1"]}" = @pokemon["type1"]
+          - if @pokemon["type2"]
+            span class="pokemon-type type-#{@pokemon["type2"]}" = @pokemon["type2"]
+
+        h2 Abilities
+        - if @pokemon["abilities"] && !@pokemon["abilities"].empty?
+          ul
+            - @pokemon["abilities"].split(', ').each do |ability|
+              li = ability
+        - else
+          p No abilities found
+
+    / ======= Middle Section: Stats & Type Effectiveness =======
+    .middle-column
+      .pokemon-stats
+        h2 Base Stats
+        ul.stats-list
+        - @stats = ["hp", "attack", "defense", "sp_attack", "sp_defense", "speed"]
+        - @stats.each do |stat|
+          li
+            span.stat-name = stat.upcase.gsub("_", " ")
+            .stat-bar
+              .bar style="width: #{(@pokemon[stat].to_f / 255) * 100}%" = @pokemon[stat]
+
+    .type-effectiveness
+        h2 Type Effectiveness
+        .effectiveness-grid
+            - @effectiveness_list.each_with_index do |type_batch, index|
+                - if index.even?  # Type Name Row
+                    .effectiveness-row
+                        - type_batch.each do |type, _|
+                            - if type != ""  # Ignore empty placeholders
+                                .type-cell class="type-#{type}" = type
+                            - else
+                                .type-cell.empty 
+
+                - else  # Effectiveness Value Row
+                    .effectiveness-row
+                        - type_batch.each do |type, multiplier|
+                            - if type != ""  # Ignore empty placeholders
+                                .effectiveness-value class=(multiplier == 2.0 ? "damage-2x" : multiplier == 0.5 ? "damage-half" : multiplier == 0.0 ? "damage-0x" : "damage-neutral") = "#{multiplier}×"
+                            - else
+                                .effectiveness-value.empty
+
+
+
+
+
+    / ======= Right Side: Evolution Chain =======
+    .right-column
+      .evolution-chart
+        h2 Evolution Chain
+        - if @evolution_chain && @evolution_chain.any?
+          .evolution-container
+            - @evolution_chain.each do |evo|
+              .evolution-stage
+                img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/#{evo["id"]}.png" alt=evo["name"]
+                p = evo["name"].capitalize
+                - if evo["evolution_condition"]
+                  small Evolution Condition: #{evo["evolution_condition"]}
+        - else
+          p No evolution data available.
+
+a.back-button href="/pokedex" Back to Pokédex

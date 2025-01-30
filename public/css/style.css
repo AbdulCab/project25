@@ -1,116 +1,313 @@
-*{
+/*********** Global Reset ***********/
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
+body {
+  font-size: 16px;
+}
+
+/*********** Pokémon Type Colors ***********/
+[class^="type-"] {
+  color: white;
+  font-weight: bold;
+  padding: 5px 12px;
+  border-radius: 15px;
+  display: inline-block;
+  text-transform: capitalize;
+  font-size: 0.9rem;
+}
+
+.type-Fire { background-color: #FF4422; }
+.type-Water { background-color: #3399FF; }
+.type-Grass { background-color: #77CC55; }
+.type-Electric { background-color: #FFCC33; }
+.type-Ice { background-color: #66CCFF; }
+.type-Fighting { background-color: #BB5544; }
+.type-Poison { background-color: #AA5599; }
+.type-Ground { background-color: #DDBB55; }
+.type-Flying { background-color: #8899FF; }
+.type-Psychic { background-color: #FF5599; }
+.type-Bug { background-color: #AABB22; }
+.type-Rock { background-color: #BBAA66; }
+.type-Ghost { background-color: #6666BB; }
+.type-Dragon { background-color: #7766EE; }
+.type-Dark { background-color: #775544; }
+.type-Steel { background-color: #AAAABB; }
+.type-Fairy { background-color: #EE99EE; }
+.type-Normal { background-color: #AAAA99; }
+
+/*********** Shake Animation ***********/
 @keyframes shake {
-  0% { transform: translate(1px, 1px) rotate(0deg); }
-  10% { transform: translate(-1px, -2px) rotate(-1deg); }
-  20% { transform: translate(-3px, 0px) rotate(1deg); }
-  30% { transform: translate(3px, 2px) rotate(0deg); }
-  40% { transform: translate(1px, -1px) rotate(1deg); }
-  50% { transform: translate(-1px, 2px) rotate(-1deg); }
-  60% { transform: translate(-3px, 1px) rotate(0deg); }
-  70% { transform: translate(3px, 1px) rotate(-1deg); }
-  80% { transform: translate(-1px, -1px) rotate(1deg); }
-  90% { transform: translate(1px, 2px) rotate(0deg); }
-  100% { transform: translate(1px, -2px) rotate(-1deg); }
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 2px); }
+  50% { transform: translate(2px, -2px); }
+  75% { transform: translate(-1px, 1px); }
 }
 
-#pokeimg {
-    width: 250px;
-    height: auto;
-  }
+/*********** Navigation Bar ***********/
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgb(165, 150, 150);
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
 
-  section {
-    background-color: rgb(226, 17, 17);
-    display: grid;
-  }
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 85%;
+  max-width: 1100px;
+}
 
-  .cards {  
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
-    width: 80%;
-    margin: 0 auto;
-    justify-content: center;
-  }
+nav a {
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 10px;
+}
 
-  #card {
-    flex: 1 1 calc(33%-10px);
-    box-sizing: border-box;
-    padding: 20px;
-    background-color: #ffffff;
-    border: 2px solid black;
-    border-radius: 8px;
-    text-align: center;
-  }
+nav a:hover {
+  text-decoration: underline;
+}
 
-  #card:hover {
-    box-shadow: 2px 2px 4px lightblue;
-    animation: shake 0.20s;
+/*********** Search Bar Styling ***********/
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 25px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 5px;
+}
 
-  }
+#search-box {
+  flex: 1;
+  border: none;
+  padding: 12px 15px;
+  font-size: 1rem;
+  outline: none;
+  border-radius: 25px;
+}
 
-  #card-contents {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: end;
-  }
+//*********** Search Results Styling ***********/
+#search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-height: 300px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  z-index: 1000;
+  display: none;
+}
 
-  li {
-    margin-right: 10px;
-    list-style: none;
-    word-wrap: break-word;
-  }
+/* ✅ Ensure the dropdown is displayed when results exist */
+#search-results.active {
+  display: block !important;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
 
-  a {
-    color: black;
-    text-decoration: none;
-  }
+/* ✅ Improve styling for each Pokémon result */
+#search-results li {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  transition: background 0.3s ease-in-out;
+  cursor: pointer;
+  opacity: 1;
+}
 
-  #search-results {
-    list-style: none;
-    padding: 0;
-    position: absolute;
-    background: white;
-    width: 250px;
-    border: 1px solid #ddd;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
-  #search-results li {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  #search-results li:hover {
-    background: #f0f0f0;
-  }
-  
-  #search-results li a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    flex-grow: 1;
-    margin-left: 10px;
-  }
-  
-  .search-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  
-  .search-type {
-    font-size: 12px;
-    color: #666;
-    margin-left: 5px;
-  }
-  
+#search-results li:hover {
+  background: #f9f9f9;
+}
+
+/* ✅ Ensure Pokémon images in search results look good */
+.search-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: #f4f4f4;
+  object-fit: contain;
+}
+
+/* ✅ Ensure type text is visible */
+.search-type {
+  margin-left: 10px;
+  font-size: 0.9rem;
+  color: gray;
+  font-style: italic;
+}
+
+
+
+
+
+/*********** Main Sections ***********/
+main {
+  padding-top: 60px;
+}
+
+section {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8;
+  text-align: center;
+  padding: 30px 0;
+}
+
+/*********** Pokédex Page ***********/
+.section-container {
+  width: 85%;
+  max-width: 1000px;
+  text-align: center;
+}
+
+.cards {  
+  display: flex;
+  max-width: calc(33%-10px);
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  width: 180px;
+  background-color: #ffffff;
+  border: 2px solid black;
+  border-radius: 8px;
+  text-align: center;
+  padding: 8px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 2px 2px 4px lightblue;
+  animation: shake 0.2s;
+  transform: scale(1.05);
+}
+
+.pokeimg {
+  width: 130px;
+}
+
+/*********** Poke Page **********/
+
+.pokemon-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 90vh;
+  flex-wrap: wrap;  /* ✅ Ensures responsiveness */
+}
+
+.container {
+  display: flex;
+  flex-wrap: nowrap;  /* ✅ Prevents stacking */
+  width: 85%;
+  max-width: 1100px;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.left-column, .middle-column, .right-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*********** Type Effectiveness Grid (4x9) ***********/
+.effectiveness-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr); /* 9 columns */
+  gap: 5px;
+  text-align: center;
+  width: 100%;
+  max-width: 950px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 20px auto;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.effectiveness-row {
+  display: contents;
+}
+
+/* Type Name Styling */
+.type-cell {
+  font-weight: bold;
+  text-transform: capitalize;
+  padding: 8px;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  font-size: 0.9rem;
+  background: gray;
+}
+
+/* Damage Value Styling */
+.effectiveness-value {
+  padding: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+  background: #f0f0f0;
+}
+
+/* Effectiveness Colors */
+.damage-2x { background: #66cc66; color: black; } /* Green for 2×+ */
+.damage-half { background: #ff6666; color: black; } /* Red for ½× */
+.damage-0x { background: black; color: white; } /* Black for 0× */
+.damage-neutral { background: #ddd; color: black; } /* Gray for 1× */
+
+
+
+
+/*********** Back Button ***********/
+.back-button {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  background: #ffcc00;
+  padding: 8px 12px;
+  border-radius: 5px;
+  color: black;
+  font-weight: bold;
+  transition: background 0.2s ease-in-out;
+}
+
+.back-button:hover {
+  background: #ffaa00;
+}
