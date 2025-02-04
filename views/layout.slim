@@ -1,18 +1,23 @@
-<!DOCTYPE html>
+doctype html
 html lang="en"
-    head
-        meta charset="UTF-8"/
-        meta name="viewport" content="width=device-width, initial-scale=1.0"/
-        title Document
-        link rel="stylesheet" href="/css/style.css"/
-        script src="/js/search.js" defer
-    body 
+  head
+    meta charset="UTF-8"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    title Pokédex
+    link rel="stylesheet" href="/css/style.css"
+    script src="/js/search.js" defer
+  body 
 
-        nav 
-            a href="/" Home
-            a href="/search" Search
+    / ======= Navigation Bar (Sticky) =======
+    nav 
+      .nav-container
+        a href="/" Home
+        a href="/search" Search
+        .search-container
             input#search-box type="text" placeholder="Search Pokémon..."
             ul#search-results
 
-        section 
-            ==yield
+
+    / ======= Page Content (Full-Screen Sections) =======
+    main 
+      == yield
