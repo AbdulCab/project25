@@ -22,7 +22,7 @@ get('/index') do
 end
 
 get('/index/:name') do
-  db = db_connection()
+
   @pokemon = pokedata(:name)
   @pokemon["image_url"]= pokeimg(:name)
     all_types = fetch_type()
@@ -34,8 +34,7 @@ get('/index/:name') do
     format_effectiveness_list
 
   # Fetch evolution chain (previous & next evolutions)
-  @evolution_chain = db.execute(" SELECT p.id, p.name, e.evolution_condition FROM evolution_chart e JOIN Pokemons p ON e.pokemon_id = p.id OR e.pre_evolution_id = p.id WHERE (e.pre_evolution_id = ? OR e.pokemon_id = ?) AND p.id != ?",[@pokemon["id"], @pokemon["id"], @pokemon["id"]]) 
-
+  @evolution_chain = fetch_evolution()
   slim(:pokemon)
 end
 
@@ -86,7 +85,7 @@ end
 post('/users/new') do
   username = params[:username]
   password = params[:password]
-  password_confirm = params[:password]
+  password_confirm = params[:password_confirm]
 
   if password == password_confirm
     #lägg till användare

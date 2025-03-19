@@ -86,3 +86,7 @@ def format_effectiveness_list
   ]
 end
 
+def fetch_evolution()
+  db = db_connection()
+  return db.execute(" SELECT p.id, p.name, e.evolution_condition FROM evolution_chart e JOIN Pokemons p ON e.pokemon_id = p.id OR e.pre_evolution_id = p.id WHERE (e.pre_evolution_id = ? OR e.pokemon_id = ?) AND p.id != ?",[@pokemon["id"], @pokemon["id"], @pokemon["id"]]) 
+end
