@@ -1,0 +1,20 @@
+head
+    title Registrera dig
+    link rel="stylesheet" href="/css/style.css"  # Länka din CSS-fil
+body
+    div class="reg_container"
+        h2 Registrering
+
+
+        form action="/users/new" method="post"
+            div class="reg_form"
+                label for="username" Användarnamn:
+                input type="text" name="username" required
+            div class="reg_form"
+                label for="password" Lösenord:
+                input type="password" name="password" required
+            div class="reg_form"
+                label for="password_confirm" Bekräfta lösenord:
+                input type="password" name="password_confirm" required
+
+                button type="submit" Registrera
