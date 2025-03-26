@@ -224,7 +224,7 @@ section {
 
 .pokemon-page {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
   min-height: 90vh;
@@ -232,18 +232,28 @@ section {
 }
 
 .stats-list {
-  display: inline-block ;
-  flex-direction: c;
+  display: inline-block;
+  flex-direction: column;
 
 }
 
 .container {
   display: flex;
   flex-wrap: nowrap; 
-  width: 85%;
+  width: 90%;
   max-width: 1100px;
   justify-content: space-between;
   padding: 20px;
+}
+
+.left-column {
+  position: absolute;
+  left: 0;
+}
+
+.right-column {
+  position: absolute;
+  right: 0;
 }
 
 .left-column, .middle-column, .right-column {
@@ -318,4 +328,25 @@ section {
 
 .back-button:hover {
   background: #ffaa00;
+}
+
+.reg_container {
+  position: absolute;  /* Placerar relativt fönstret */
+  left: 10%;  /* Justera hur långt från vänstra kanten */
+  top: 50%;
+  transform: translateY(-50%);  /* Centrerar vertikalt */
+  width: 400px;  /* Gör formuläret större */
+  background: rgb(184, 133, 133);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  
+}
+
+.reg_form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 80%;
+  border-radius: 30%;
 }

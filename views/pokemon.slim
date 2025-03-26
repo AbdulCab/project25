@@ -1,6 +1,5 @@
 section.pokemon-page
   .container
-    / ======= Left Side: Pokémon Image & Basic Info =======
     .left-column
       .pokemon-image
         img src=@pokemon["image_url"] alt=@pokemon["name"]
@@ -21,7 +20,6 @@ section.pokemon-page
         - else
           p No abilities found
 
-    / ======= Middle Section: Stats & Type Effectiveness =======
     .middle-column
       .pokemon-stats
         h2 Base Stats
@@ -57,7 +55,6 @@ section.pokemon-page
 
 
 
-    / ======= Right Side: Evolution Chain =======
     .right-column
       .evolution-chart
         h2 Evolution Chain
@@ -72,4 +69,4 @@ section.pokemon-page
         - else
           p No evolution data available.
 
-a.back-button href="/pokedex" Back to Pokédex
+a.back-button href="/index" Back to Pokédex

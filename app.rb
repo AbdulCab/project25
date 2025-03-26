@@ -40,7 +40,7 @@ end
 
 
 
-# Route to return filtered Pokémon in JSON format
+# kod som är till för js-skripten
 get '/search_pokemon' do
   db = db_connection
   query = params[:q].to_s.downcase.strip
@@ -64,6 +64,7 @@ get '/search_pokemon' do
   pokemons.to_json
 end
 
+
 post('/login') do 
   username = params[:username]
   password = params[:password]
@@ -76,10 +77,14 @@ post('/login') do
   if BCrypt::Password.new(pwdigest) == password
     session[:id] = id
     
-    redirect('/pokedex')
+    redirect('/index')
   else
     "Fel lösen"
   end
+end
+
+get('/register') do
+  slim(:register)
 end
 
 post('/users/new') do
@@ -87,14 +92,6 @@ post('/users/new') do
   password = params[:password]
   password_confirm = params[:password_confirm]
 
-  if password == password_confirm
-    #lägg till användare
-    password_digest = BCrypt::Password.create(password)
-    db= SQLite3::Database.new('db/pokemon.db')
-    db.execute("INSERT INTO users (username,pwdigest) VALUES (?,?)",[username,password_digest])
-    redirect('/login')
+  new_acc_auth(username, password, password_confirm)
 
-  else
-    "Lösenorden matchade inte"
-  end
 end

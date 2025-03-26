@@ -90,3 +90,18 @@ def fetch_evolution()
   db = db_connection()
   return db.execute(" SELECT p.id, p.name, e.evolution_condition FROM evolution_chart e JOIN Pokemons p ON e.pokemon_id = p.id OR e.pre_evolution_id = p.id WHERE (e.pre_evolution_id = ? OR e.pokemon_id = ?) AND p.id != ?",[@pokemon["id"], @pokemon["id"], @pokemon["id"]]) 
 end
+
+def new_acc_auth(username, password, password_confirm)
+  if password == password_confirm
+    #lägg till användare
+    password_digest = BCrypt::Password.create(password)
+    db= SQLite3::Database.new('db/pokemon.db')
+    db.execute("INSERT INTO users (username,pwdigest) VALUES (?,?)",[username,password_digest])
+    redirect('/login')
+
+  else
+    "Lösenorden matchade inte"
+  end
+
+
+end
