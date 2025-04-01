@@ -109,3 +109,10 @@ post('/users/login') do
   curr_acc_auth(username, password, session)
 end
 
+
+
+
+get('/logout') do
+  session.clear
+  redirect('/index')
+end

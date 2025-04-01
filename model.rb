@@ -117,10 +117,11 @@ def curr_acc_auth(username, password, session)
 
   pwdigest = result["pwdigest"]
   id = result["id"]
+  
 
   if BCrypt::Password.new(pwdigest) == password
     session[:id] = id
-    
+    session[:username] = result["username"]
     redirect('/index')
   else
     "Fel lösenord"
