@@ -8,6 +8,7 @@ require_relative './model.rb'
 
 enable :sessions
 
+
 # Database connection method
 
 
@@ -95,3 +96,16 @@ post('/users/new') do
   new_acc_auth(username, password, password_confirm)
 
 end
+
+get('/login')  do
+  slim(:login)
+end
+
+post('/users/login') do
+  username = params[:username]
+  password = params[:password]
+  puts "Received params: #{params.inspect}" # Debugging
+  halt 400, "Username or password missing" if username.nil? || password.nil?
+  curr_acc_auth(username, password, session)
+end
+

@@ -5,6 +5,9 @@ require 'sqlite3'
 require 'byebug'
 require 'json'
 
+enable :sessions
+
+
 def db_connection()
   db = SQLite3::Database.new "db/pokemon.db"
   db.results_as_hash = true
@@ -103,5 +106,24 @@ def new_acc_auth(username, password, password_confirm)
     "Lösenorden matchade inte"
   end
 
+
+end
+
+def curr_acc_auth(username, password, session)
+
+  db = db_connection()
+  result = db.execute("SELECT * FROM users WHERE username = ?",username).first
+  return "Användaren hittades inte" if result.nil?
+
+  pwdigest = result["pwdigest"]
+  id = result["id"]
+
+  if BCrypt::Password.new(pwdigest) == password
+    session[:id] = id
+    
+    redirect('/index')
+  else
+    "Fel lösenord"
+  end
 
 end
