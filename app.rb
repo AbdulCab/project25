@@ -7,6 +7,7 @@ require 'slim'
 require 'sqlite3'
 require 'bcrypt'
 require 'json'
+require_relative './model.rb'
 
 include Model # Wat dis?
 
