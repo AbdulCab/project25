@@ -83,70 +83,62 @@ nav a:hover {
 }
 
 /*********** Search Bar Styling ***********/
+/* Ensure the search box is properly positioned */
 .search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
-  background: #fff;
-  border-radius: 25px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  padding: 5px;
+  position: relative; /* Necessary for absolute positioning of the dropdown */
+  width: 360px;
 }
 
-#search-box {
-  flex: 1;
-  border: none;
-  padding: 12px 15px;
-  font-size: 1rem;
-  outline: none;
-  border-radius: 25px;
-}
-
-//*********** Search Results Styling ***********/
+/* Container for the search results dropdown */
 #search-results {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 100%;
-  background: white;
-  border-radius: 10px;
+  width: 100%; /* Full width of the container */
+  max-width: 400px; /* Set a max width */
+  background-color: white;
   border: 1px solid #ddd;
+  border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  max-height: 300px;
-  overflow-y: auto;
-  list-style: none;
-  padding: 0;
-  z-index: 1000;
+  max-height: 300px; /* Max height for scrolling */
+  overflow-y: auto; /* Scrollable if too many items */
+  z-index: 1000; /* Keep it above other elements */
   display: none;
+  padding: 0;
+  margin-top: 10px;
+  font-family: 'Arial', sans-serif;
+  transition: all 0.3s ease;
+  background: linear-gradient(to bottom, #fff, #f9f9f9); /* Soft gradient for aesthetics */
+  border: 1px solid #bbb; /* Slightly softer border */
 }
 
-/* ✅ Ensure the dropdown is displayed when results exist */
+/* Show dropdown when results exist */
 #search-results.active {
-  display: block !important;
+  display: block; /* Show when active */
   opacity: 1;
   transition: opacity 0.2s ease-in-out;
 }
 
-/* ✅ Improve styling for each Pokémon result */
+/* Style each list item */
 #search-results li {
   display: flex;
   align-items: center;
   padding: 12px;
   border-bottom: 1px solid #eee;
-  transition: background 0.3s ease-in-out;
   cursor: pointer;
-  opacity: 1;
+  transition: background 0.3s ease-in-out;
+  font-size: 1rem;
+  color: #333; /* Dark text for readability */
 }
 
+/* Highlight the item on hover */
 #search-results li:hover {
-  background: #f9f9f9;
+  background-color: #f1f1f1;
+  border-radius: 8px; /* Rounded corners on hover */
+  transform: scale(1.02); /* Subtle hover effect */
 }
 
-/* ✅ Ensure Pokémon images in search results look good */
+/* Pokémon image styling */
 .search-img {
   width: 40px;
   height: 40px;
@@ -154,14 +146,36 @@ nav a:hover {
   border-radius: 50%;
   background: #f4f4f4;
   object-fit: contain;
+  border: 2px solid #ddd; /* Border around the image */
 }
 
-/* ✅ Ensure type text is visible */
+/* Pokémon type styling */
 .search-type {
   margin-left: 10px;
   font-size: 0.9rem;
-  color: gray;
+  color: rgb(0, 0, 0);
   font-style: italic;
+  text-transform: capitalize; /* Capitalize the type text */
+}
+
+/* Add some padding around the dropdown for a cleaner look */
+#search-results li:last-child {
+  border-bottom: none; /* Remove border for last item */
+}
+
+/* Add a smooth transition for the entire dropdown */
+#search-results {
+  transition: all 0.3s ease-in-out;
+}
+
+#search-results li a {
+  color: #333; /* Black or dark gray color */
+  text-decoration: none; /* Remove underline */
+}
+
+/* Add hover effect for links */
+#search-results li a:hover {
+  color: #007bff; /* Change to blue or any color on hover */
 }
 
 
@@ -332,23 +346,34 @@ section {
   background: #ffaa00;
 }
 
+/*********** Registration Form Styling (Fixed) ***********/
 .reg_container {
-  position: absolute;  /* Placerar relativt fönstret */
-  left: 10%;  /* Justera hur långt från vänstra kanten */
+  position: absolute;  /* Placing relative to the window */
+  left: 50%;  /* Center horizontally */
   top: 50%;
-  transform: translateY(-50%);  /* Centrerar vertikalt */
-  width: 400px;  /* Gör formuläret större */
+  transform: translate(-50%, -50%);  /* Center vertically */
+  width: 400px;  /* Makes the form larger */
   background: rgb(184, 133, 133);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.reg_form {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  width: 80%;
-  border-radius: 30%;
+.reg_container input,
+.reg_container button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.reg_container button {
+  background-color: #ffcc00;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.reg_container button:hover {
+  background-color: #ffaa00;
 }

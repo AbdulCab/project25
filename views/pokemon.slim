@@ -30,6 +30,14 @@ section.pokemon-page
             span.stat-name = stat.upcase.gsub("_", " ")
             .stat-bar
               .bar style="width: #{(@pokemon[stat].to_f / 255) * 100}%" = @pokemon[stat]
+        - if session[:role] == "admin"
+          h3 Edit Stats
+          form action="/update_pokemon/#{@pokemon['name']}" method="post"
+            - @stats.each do |stat|
+              label for=stat = stat.upcase.gsub("_", " ")
+              input type="number" name=stat value=@pokemon[stat]
+
+            button type="submit" Update Stats
 
     .type-effectiveness
         h2 Type Effectiveness

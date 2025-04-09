@@ -110,21 +110,26 @@ def new_acc_auth(username, password, password_confirm)
 end
 
 def curr_acc_auth(username, password, session)
-
   db = db_connection()
-  result = db.execute("SELECT * FROM users WHERE username = ?",username).first
+  result = db.execute("SELECT * FROM users WHERE username = ?", [username]).first
+
+  puts "DB Result: #{result.inspect}" # Debugging
   return "Användaren hittades inte" if result.nil?
 
   pwdigest = result["pwdigest"]
   id = result["id"]
-  
+  role = result["role"]
 
   if BCrypt::Password.new(pwdigest) == password
     session[:id] = id
     session[:username] = result["username"]
-    redirect('/index')
-  else
-    "Fel lösenord"
-  end
+    session[:role] = role
 
+    puts "Session after setting: #{session.inspect}" # Debugging
+
+    return "Inloggning lyckades"
+  else
+    return "Fel lösenord"
+  end
 end
+

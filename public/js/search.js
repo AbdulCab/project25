@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let noResults = document.createElement("li");
             noResults.textContent = "No Pokémon found.";
             resultsList.appendChild(noResults);
-            resultsList.classList.add("active"); // ✅ Ensure dropdown is visible
+            resultsList.classList.add("active"); // Show dropdown when no results
             return;
           }
 
@@ -42,12 +42,12 @@ document.addEventListener("DOMContentLoaded", function () {
             resultsList.appendChild(li);
           });
 
-          resultsList.classList.add("active"); // ✅ Ensure dropdown appears
+          resultsList.classList.add("active"); // Show the dropdown with results
         })
         .catch(error => console.error("Error fetching Pokémon:", error));
     } else {
       resultsList.innerHTML = ""; // Clear results if input is empty
-      resultsList.classList.remove("active");
+      resultsList.classList.remove("active"); // Hide the dropdown
     }
   });
 });

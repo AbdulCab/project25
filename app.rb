@@ -11,6 +11,10 @@ enable :sessions
 
 # Database connection method
 
+before do
+  @is_admin = session[:role] == "admin"
+end
+
 
 get('/') do
   slim(:index)
@@ -23,7 +27,7 @@ get('/index') do
 end
 
 get('/index/:name') do
-
+  puts "Session Role: #{session[:role]}"  # Check if it's correctly set
   @pokemon = pokedata(:name)
   @pokemon["image_url"]= pokeimg(:name)
     all_types = fetch_type()
@@ -42,7 +46,7 @@ end
 
 
 # kod som är till för js-skripten
-get '/search_pokemon' do
+get ('/search_pokemon') do
   db = db_connection
   query = params[:q].to_s.downcase.strip
 
@@ -66,24 +70,6 @@ get '/search_pokemon' do
 end
 
 
-post('/login') do 
-  username = params[:username]
-  password = params[:password]
-  db = SQLite3::Database.new('db/pokemon.db')
-  db.results_as_hash = true
-  result = db.execute("SELECT * FROM users WHERE username = ?",username).first
-  pwdigest = result["pwdigest"]
-  id = result["id"]
-
-  if BCrypt::Password.new(pwdigest) == password
-    session[:id] = id
-    
-    redirect('/index')
-  else
-    "Fel lösen"
-  end
-end
-
 get('/register') do
   slim(:register)
 end
@@ -104,12 +90,30 @@ end
 post('/users/login') do
   username = params[:username]
   password = params[:password]
-  puts "Received params: #{params.inspect}" # Debugging
   halt 400, "Username or password missing" if username.nil? || password.nil?
-  curr_acc_auth(username, password, session)
+
+  result = curr_acc_auth(username, password, session)
+
+  redirect('/index') if result == "Inloggning lyckades"
+  result # Returnerar felmeddelandet om inloggningen misslyckas
 end
 
+post('/update_pokemon/:name') do
+  halt 403, "Access Denied" unless @is_admin  
 
+  name = params[:name]
+  hp = params[:hp]
+  attack = params[:attack]
+  defense = params[:defense]
+  sp_attack = params[:sp_attack]
+  sp_defense = params[:sp_defense]
+  speed = params[:speed]
+
+  db = db_connection()
+  db.execute("UPDATE Pokemons SET hp = ?, attack = ?, defense = ?, sp_attack = ?, sp_defense = ?, speed = ? WHERE name = ?", [hp, attack, defense, sp_attack, sp_defense, speed, name])
+
+  redirect("/index/#{name}")  # Redirect back to Pokémon page
+end
 
 
 get('/logout') do
