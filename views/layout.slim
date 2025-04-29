@@ -16,7 +16,7 @@ html lang="en"
           input#search-box type="text" placeholder="Search Pokémon..."
           ul#search-results
         - if session[:username]
-          a href="/account" #{session[:username]}
+          a href="/team_builder" #{session[:username]}
           a href="/logout" Logga ut  
         - else 
           a href="/register" Register

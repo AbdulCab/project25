@@ -139,6 +139,43 @@ post('/update_pokemon/:name') do
   redirect("/index/#{name}")  # Redirect back to Pokémon page
 end
 
+get('/team_builder') do
+  # Check if the user is logged in
+  halt 403, "Access Denied" unless session[:user_id]
+  db = db_connection() 
+  team_create() # Ensure a team exists for the user
+  slim(:update_team)
+end
+
+# Route for handling team builder updates
+# @param pokemon1 [String] The name of the first Pokémon
+# @param pokemon2 [String] The name of the second Pokémon
+# @param pokemon3 [String] The name of the third Pokémon
+# @param pokemon4 [String] The name of the fourth Pokémon
+# @param pokemon5 [String] The name of the fifth Pokémon
+# @param pokemon6 [String] The name of the sixth Pokémon
+# @return [String] Redirects to the team builder page after updating
+post('/update_team') do
+  user_id = session[:user_id]
+  halt 403, "Access Denied" unless user_id  # Check if the user is logged in
+
+  pokemon1 = params[:pokemon1]
+  pokemon2 = params[:pokemon2]
+  pokemon3 = params[:pokemon3]
+  pokemon4 = params[:pokemon4]
+  pokemon5 = params[:pokemon5]
+  pokemon6 = params[:pokemon6]
+
+  db = db_connection()
+  db.execute(<<-SQL, [pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6, user_id])
+    UPDATE Teams
+    SET pokemon1 = ?, pokemon2 = ?, pokemon3 = ?, pokemon4 = ?, pokemon5 = ?, pokemon6 = ?
+    WHERE user_id = ?
+  SQL
+
+  redirect('/team_builder')
+end
+
 # Route to log out the user by clearing the session
 # @return [String] Redirects to the index page after logging out
 get('/logout') do

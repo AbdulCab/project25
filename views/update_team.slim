@@ -1,0 +1,35 @@
+  head
+    title Team Builder
+    script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"
+    link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+    style
+      |
+        .select2-container {
+          width: 100% !important;
+        }
+
+  body
+    h1 Update Your Team
+
+    form action="/update_team" method="post"
+      
+      .team-form
+        - (1..6).each do |i|
+          .form-group
+            label for="pokemon#{i}" = "Select Pokémon #{i}"
+            select name="pokemon#{i}" id="pokemon#{i}"
+              option value="" None
+              - @pokemons.each do |pokemon|
+                option value=pokemon["id"] #{pokemon["name"]}
+            script
+              | $(document).ready(function() {
+              |   $('#pokemon#{i}').select2({
+              |     placeholder: 'Select a Pokémon',
+              |     allowClear: true
+              |   });
+              | });
+
+      button type="submit" Update Team
+
+    br
+    a href="/team_builder" Back to Team Builder

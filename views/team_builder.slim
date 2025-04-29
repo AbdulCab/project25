@@ -1,0 +1,5 @@
+- (@teams || []).select { |team| team.id == session[:user_id] }.each do |team|
+    tr
+        td= team&.name
+        td= team&.pokemon&.find { |pokemon| pokemon.id == team.pokemon_id }&.name
+        a href="/team/#{team.id}" View Team updater

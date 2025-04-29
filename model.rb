@@ -158,14 +158,31 @@ module Model
 
     if BCrypt::Password.new(pwdigest) == password
       session[:id] = id
+      session[:user_id] = id
       session[:username] = result["username"]
       session[:role] = role
 
       puts "Session after setting: #{session.inspect}" # Debugging
-
+      puts "#{session[:user_id]}"
       return "Inloggning lyckades"
     else
       return "Fel lösenord"
     end
   end
+end
+
+def team_create()
+  db = db_connection()
+  # Insert user_id into the Teams table if no team exists for the user
+  db.execute("INSERT OR IGNORE INTO Teams (user_id) VALUES (?)", [session[:id]])
+
+  # Fetch the team for the logged-in user
+  @team = db.execute("SELECT * FROM Teams WHERE user_id = ?", [session[:user_id]]).first
+  @pokemons = pokedex()
+end
+
+def poke_team()
+  db = db_connection()
+  team = db.execute("SELECT * FROM Teams WHERE user_id = ?", [session[:user_id]]).first
+  return team
 end
