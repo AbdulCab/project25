@@ -30,10 +30,14 @@ module Model
       db.execute("SELECT * FROM users WHERE username = ?", [username]).first
     end
   
-    # Delete a user by username
+    # Delete a user and their team by username
     def delete_user_by_username(username)
       db = db_connection()
-      db.execute("DELETE FROM users WHERE username = ?", [username])
+      user = db.execute("SELECT id FROM users WHERE username = ?", username).first
+      if user
+        db.execute("DELETE FROM teams WHERE user_id = ?", user["id"])
+        db.execute("DELETE FROM users WHERE id = ?", user["id"])
+      end
     end
 
   # Retrieves a list of all Pokémon in the database along with their types and image URLs
