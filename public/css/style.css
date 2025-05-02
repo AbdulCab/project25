@@ -22,24 +22,24 @@ body {
   font-size: 0.9rem;
 }
 
-.type-Fire { background-color: #FF4422; }
-.type-Water { background-color: #3399FF; }
-.type-Grass { background-color: #77CC55; }
-.type-Electric { background-color: #FFCC33; }
-.type-Ice { background-color: #66CCFF; }
-.type-Fighting { background-color: #BB5544; }
-.type-Poison { background-color: #AA5599; }
-.type-Ground { background-color: #DDBB55; }
-.type-Flying { background-color: #8899FF; }
-.type-Psychic { background-color: #FF5599; }
-.type-Bug { background-color: #AABB22; }
-.type-Rock { background-color: #BBAA66; }
-.type-Ghost { background-color: #6666BB; }
-.type-Dragon { background-color: #7766EE; }
-.type-Dark { background-color: #775544; }
-.type-Steel { background-color: #AAAABB; }
-.type-Fairy { background-color: #EE99EE; }
-.type-Normal { background-color: #AAAA99; }
+.type-Fire { color: #FF4422; }
+.type-Water { color: #3399FF; }
+.type-Grass { color: #77CC55; }
+.type-Electric { color: #FFCC33; }
+.type-Ice { color: #66CCFF; }
+.type-Fighting { color: #BB5544; }
+.type-Poison { color: #AA5599; }
+.type-Ground { color: #DDBB55; }
+.type-Flying { color: #8899FF; }
+.type-Psychic { color: #FF5599; }
+.type-Bug { color: #AABB22; }
+.type-Rock { color: #BBAA66; }
+.type-Ghost { color: #6666BB; }
+.type-Dragon { color: #7766EE; }
+.type-Dark { color: #775544; }
+.type-Steel { color: #AAAABB; }
+.type-Fairy { color: #EE99EE; }
+.type-Normal { color: #AAAA99; }
 
 /*********** Shake Animation ***********/
 @keyframes shake {
@@ -377,3 +377,133 @@ section {
 .reg_container button:hover {
   background-color: #ffaa00;
 }
+
+
+/*********** Team Syling ***********/
+.team-grid {
+  display: grid !important; /* Tvinga grid-layout */
+  grid-template-columns: repeat(3, 1fr); /* Max tre kolumner */
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.container-team-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Anpassa kolumner till 50% */
+  gap: 20px; /* Mellanrum mellan korten */
+  justify-content: center; /* Centrera innehållet */
+  padding: 20px;
+}
+
+.team-slot {
+  background-color: #f8f9fa;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px; /* Begränsa kortens bredd */
+  margin: 0 auto; /* Centrera korten */
+}
+.slot-name {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.slot-role {
+  font-size: 1.2em;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.pokemon-images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pokemon-images img {
+  width: 100%; /* Gör bilden lika bred som kortet */
+  height: auto; /* Bevara bildens proportioner */
+  object-fit: contain; /* Anpassa bilden inom kortet */
+  border-radius: 5px; /* Lägg till rundade hörn om det behövs */
+}
+
+.cell-image img {
+  width: 100%; /* Gör bilden lika bred som kortet */
+  height: auto; /* Bevara bildens proportioner */
+  object-fit: contain; /* Anpassa bilden inom kortet */
+  margin-bottom: 5px;
+  border-radius: 5px; /* Lägg till rundade hörn om det behövs */
+}
+
+.cell-types {
+  font-size: 1em;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.cell-ability {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.slot-stats {
+  text-align: left;
+  margin-top: 10px;
+}
+
+.slot-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.slot-stats p {
+  margin: 2px 0;
+  font-size: 0.9em;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  background: #ffcc00;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: black;
+  font-weight: bold;
+  transition: background 0.2s ease-in-out;
+}
+
+.back-button:hover {
+  background: #ffaa00;
+}
+
+.text-Fire { color: #FF4422; }
+.text-Water { color: #3399FF; }
+.text-Grass { color: #77CC55; }
+.text-Electric { color: #FFCC33; }
+.text-Ice { color: #66CCFF; }
+.text-Fighting { color: #BB5544; }
+.text-Poison { color: #AA5599; }
+.text-Ground { color: #DDBB55; }
+.text-Flying { color: #8899FF; }
+.text-Psychic { color: #FF5599; }
+.text-Bug { color: #AABB22; }
+.text-Rock { color: #BBAA66; }
+.text-Ghost { color: #6666BB; }
+.text-Dragon { color: #7766EE; }
+.text-Dark { color: #775544; }
+.text-Steel { color: #AAAABB; }
+.text-Fairy { color: #EE99EE; }
+.text-Normal { color: #AAAA99; }

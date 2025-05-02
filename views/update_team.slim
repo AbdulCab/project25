@@ -1,4 +1,4 @@
-  head
+head
     title Team Builder
     script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"
     link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
@@ -8,19 +8,24 @@
           width: 100% !important;
         }
 
-  body
+body
     h1 Update Your Team
 
-    form action="/update_team" method="post"
+    form action="/team_updater" method="post"
       
       .team-form
         - (1..6).each do |i|
           .form-group
             label for="pokemon#{i}" = "Select Pokémon #{i}"
             select name="pokemon#{i}" id="pokemon#{i}"
+              - if @team && @team["pokemon#{i}"]
+                - selected_pokemon = @pokemons.find { |pokemon| pokemon["id"].to_s == @team["pokemon#{i}"] }
+                - if selected_pokemon
+                  option value=selected_pokemon["id"] selected=true = selected_pokemon["name"]
               option value="" None
               - @pokemons.each do |pokemon|
-                option value=pokemon["id"] #{pokemon["name"]}
+                - unless @team && @team["pokemon#{i}"] == pokemon["id"].to_s
+                  option value=pokemon["id"] = pokemon["name"]
             script
               | $(document).ready(function() {
               |   $('#pokemon#{i}').select2({

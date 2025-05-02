@@ -19,6 +19,23 @@ module Model
     return db
   end
 
+    # Fetch all users from the database
+    def fetch_all_users()
+      db = db_connection()
+      db.execute("SELECT id, username, role FROM users")
+    end
+
+    def fetch_user_by_username(username)
+      db = db_connection()
+      db.execute("SELECT * FROM users WHERE username = ?", [username]).first
+    end
+  
+    # Delete a user by username
+    def delete_user_by_username(username)
+      db = db_connection()
+      db.execute("DELETE FROM users WHERE username = ?", [username])
+    end
+
   # Retrieves a list of all Pokémon in the database along with their types and image URLs
   # @return [Array<Hash>] List of Pokémon with their id, name, type1, type2, and image URL
   def pokedex()
@@ -129,15 +146,26 @@ module Model
   # @param password_confirm [String] The confirmation of the password
   # @return [String] Redirects to the login page or returns an error message if passwords don't match
   def new_acc_auth(username, password, password_confirm)
-    if password == password_confirm
-      # Add new user
-      password_digest = BCrypt::Password.create(password)
-      db = SQLite3::Database.new('db/pokemon.db')
-      db.execute("INSERT INTO users (username, pwdigest) VALUES (?, ?)", [username, password_digest])
-      redirect('/login')
-    else
-      "Lösenorden matchade inte"
-    end
+    db = db_connection()
+
+    # Check if username and password are provided
+    return "Användarnamnet eller lösenordet får inte vara tomt" if username.empty? || password.empty?
+
+    # Check if username is already taken
+    existing_user = db.execute("SELECT * FROM users WHERE username = ?", [username]).first
+    return "Användarnamnet är upptaget" if existing_user
+
+    # Check if passwords match
+    return "Lösenorden matchade inte" if password != password_confirm
+
+    # Check if password is strong enough (at least 8 characters)
+    return "Lösenordet måste vara minst 8 tecken långt" if password.length < 8
+
+    # Add new user to the database
+    password_digest = BCrypt::Password.create(password)
+    db.execute("INSERT INTO users (username, pwdigest) VALUES (?, ?)", [username, password_digest])
+
+    nil # Return nil if everything is successful
   end
 
   # Handles the authentication of the current user during login
@@ -148,41 +176,88 @@ module Model
   def curr_acc_auth(username, password, session)
     db = db_connection()
     result = db.execute("SELECT * FROM users WHERE username = ?", [username]).first
-
-    puts "DB Result: #{result.inspect}" # Debugging
+  
     return "Användaren hittades inte" if result.nil?
-
+  
     pwdigest = result["pwdigest"]
     id = result["id"]
     role = result["role"]
-
+  
     if BCrypt::Password.new(pwdigest) == password
       session[:id] = id
       session[:user_id] = id
       session[:username] = result["username"]
       session[:role] = role
-
-      puts "Session after setting: #{session.inspect}" # Debugging
-      puts "#{session[:user_id]}"
+  
       return "Inloggning lyckades"
     else
       return "Fel lösenord"
     end
   end
-end
 
-def team_create()
-  db = db_connection()
-  # Insert user_id into the Teams table if no team exists for the user
-  db.execute("INSERT OR IGNORE INTO Teams (user_id) VALUES (?)", [session[:id]])
+  # Checks if the user is allowed to attempt login based on a cooldown period
+  # @param last_attempt [Time, nil] The timestamp of the last login attempt
+  # @param cooldown [Integer] The cooldown period in seconds
+  # @return [String, nil] Returns an error message if the user is in cooldown, otherwise nil
+  def check_login_cooldown(last_attempt, cooldown = 10)
+    if last_attempt && Time.now - last_attempt < cooldown
+      return "För många försök. Vänta några sekunder innan du försöker igen."
+    end
+    nil
+  end
 
-  # Fetch the team for the logged-in user
-  @team = db.execute("SELECT * FROM Teams WHERE user_id = ?", [session[:user_id]]).first
-  @pokemons = pokedex()
-end
+  def team_create(user_id)
+    db = db_connection()
+    db.execute("INSERT OR IGNORE INTO Teams (user_id) VALUES (?)", [user_id])
+  end
 
-def poke_team()
-  db = db_connection()
-  team = db.execute("SELECT * FROM Teams WHERE user_id = ?", [session[:user_id]]).first
-  return team
+  def team_delete(user_id)
+    db = db_connection()
+    db.execute("DELETE FROM Teams WHERE user_id = ?", [user_id])
+  end
+
+  # Hämtar teamet för en användare
+  # @param user_id [Integer] Användarens ID
+  # @return [Hash, nil] Teamets data eller nil om inget team finns
+  def fetch_team(user_id)
+    db = db_connection()
+    db.execute("SELECT * FROM Teams WHERE user_id = ?", [user_id]).first
+  end
+
+  # Hämtar detaljerad information om Pokémon i ett team
+  # @param team [Hash] Teamets data
+  # @return [Array<Hash>] En lista med detaljerad Pokémon-data
+  def fetch_team_pokemon_data(team)
+    db = db_connection()
+    pokemons = []
+  
+    (1..6).each do |i|
+      pokemon_id = team["pokemon#{i}"]
+      next if pokemon_id.nil? || pokemon_id.empty?
+  
+      pokemon = db.execute(
+        "SELECT p.id, p.name, t1.name AS type1, t2.name AS type2, 
+                p.hp, p.attack, p.defense, p.sp_attack, p.sp_defense, p.speed,
+                COALESCE(GROUP_CONCAT(pa.ability_name, ', '), '') AS abilities
+         FROM Pokemons p
+         LEFT JOIN types t1 ON p.type1 = t1.id
+         LEFT JOIN types t2 ON p.type2 = t2.id
+         LEFT JOIN pokemon_abilities pa ON p.id = pa.pokemon_id
+         WHERE p.id = ?
+         GROUP BY p.id", [pokemon_id]
+      ).first
+  
+      pokemons << pokemon if pokemon
+    end
+  
+    pokemons
+  end
+
+
+  def fetch_team_data(pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
+    user_id = session[:user_id]
+    db = db_connection()
+    result = db.execute("UPDATE Teams SET pokemon1 = ?, pokemon2 = ?, pokemon3 = ?, pokemon4 = ?, pokemon5 = ?, pokemon6 = ? WHERE user_id = ?",[pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6, user_id])
+    return result
+  end
 end

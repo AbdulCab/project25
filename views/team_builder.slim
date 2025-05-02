@@ -1,5 +1,39 @@
-- (@teams || []).select { |team| team.id == session[:user_id] }.each do |team|
-    tr
-        td= team&.name
-        td= team&.pokemon&.find { |pokemon| pokemon.id == team.pokemon_id }&.name
-        a href="/team/#{team.id}" View Team updater
+h1 Ditt Team
+
+- if @pokemons.any?
+    .container-team-slots
+        - @pokemons.each do |pokemon|
+            .team-slot
+                .pokemon-header
+                    h3.slot-name = pokemon["name"]
+                    .pokemon-types
+                        span class="pokemon-type type-#{pokemon['type1']}" = pokemon["type1"]
+                        - if pokemon["type2"]
+                            em = " / "
+                            span class="pokemon-type type-#{pokemon['type2']}" = pokemon["type2"]
+
+                .pokemon-images
+                    img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/#{pokemon['id']}.png" alt=pokemon["name"]
+
+                .pokemon-abilities
+                    h4 Abilities
+                    - if pokemon["abilities"] && !pokemon["abilities"].empty?
+                        ul
+                            - pokemon["abilities"].split(', ').each do |ability|
+                                li = ability
+                    - else
+                        p Inga förmågor hittades
+
+                .pokemon-stats
+                    h4 Stats
+                    ul.stats-list
+                        li HP: #{pokemon["hp"]}
+                        li Attack: #{pokemon["attack"]}
+                        li Defense: #{pokemon["defense"]}
+                        li Sp.Attack: #{pokemon["sp_attack"]}
+                        li Sp.Defense: #{pokemon["sp_defense"]}
+                        li Speed: #{pokemon["speed"]}
+- else
+    p Du har inte lagt till några Pokémon i ditt team ännu.
+
+a.back-button href="/update_team" Uppdatera ditt team

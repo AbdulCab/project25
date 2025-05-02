@@ -1,10 +1,10 @@
 head
     title Registrera dig
-    link rel="stylesheet" href="/css/style.css"  # Länka din CSS-fil
+    link rel="stylesheet" href="/css/style.css"
 body
     div class="reg_container"
         h2 Registrering
-
+        
 
         form action="/users/new" method="post"
             div class="reg_form"
@@ -16,5 +16,8 @@ body
             div class="reg_form"
                 label for="password_confirm" Bekräfta lösenord:
                 input type="password" name="password_confirm" placeholder="Skriv lösenord igen!"
-
+            - if @error
+                p.error-message= @error  
+                / Visa felmeddelandet här
+            div class="reg_form"
                 button type="submit" Registrera
