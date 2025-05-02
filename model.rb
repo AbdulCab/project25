@@ -254,7 +254,7 @@ module Model
   end
 
 
-  def fetch_team_data(pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
+  def update_team(pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6)
     user_id = session[:user_id]
     db = db_connection()
     result = db.execute("UPDATE Teams SET pokemon1 = ?, pokemon2 = ?, pokemon3 = ?, pokemon4 = ?, pokemon5 = ?, pokemon6 = ? WHERE user_id = ?",[pokemon1, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6, user_id])

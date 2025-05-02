@@ -11,18 +11,18 @@ html lang="en"
 
     nav 
       .nav-container
-        a href="/index" Home
+        a href="/pokemons" Home
         .search-container
           input#search-box type="text" placeholder="Search Pokémon..."
           ul#search-results
         - if session[:username] && session[:role] == "user"
-          a href="/team_builder" #{session[:username]}
+          a href="/teams" #{session[:username]}
           a href="/logout" Logga ut  
         - elsif session[:username] && session[:role] == "admin"
-          a href="/administration" #{session[:username]}
+          a href="/admin" #{session[:username]}
           a href="/logout" Logga ut
         - else 
-          a href="/register" Register
+          a href="/users/register" Register
           a href="/login" Login
         
 

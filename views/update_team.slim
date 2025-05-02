@@ -11,8 +11,8 @@ head
 body
     h1 Update Your Team
 
-    form action="/team_updater" method="post"
-      
+    form action="/teams" method="post"
+      input type="hidden" name="_method" value="put" 
       .team-form
         - (1..6).each do |i|
           .form-group
