@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
             li.classList.add("search-result-item");
 
             let link = document.createElement("a");
-            link.href = `/index/${pokemon.name}`;
+            link.href = `/pokemons/${pokemon.name}`;
             link.textContent = pokemon.name;
 
             let img = document.createElement("img");

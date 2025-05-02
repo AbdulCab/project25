@@ -64,7 +64,7 @@ module Model
   # @raise [Sinatra::NotFound] If the Pokémon is not found in the database
   def pokedata(name)
     db = db_connection()
-    name = params[name].strip.capitalize
+    name = params[:name].strip.capitalize
     pokemon = db.execute("SELECT p.id, p.name, t1.name AS type1, t2.name AS type2, p.hp, p.attack, p.defense, p.sp_attack, p.sp_defense, p.speed, COALESCE(GROUP_CONCAT(pa.ability_name, ', '), '') AS abilities FROM Pokemons p LEFT JOIN types t1 ON p.type1 = t1.id LEFT JOIN types t2 ON p.type2 = t2.id LEFT JOIN pokemon_abilities pa ON p.id = pa.pokemon_id WHERE LOWER(p.name) = LOWER(?) GROUP BY p.id", [name])
 
     halt 404, "Pokémon not found" if pokemon.empty?

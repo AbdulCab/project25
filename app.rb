@@ -33,6 +33,7 @@ end
 # List all Pokémon
 get('/pokemons') do
   @pokemons = pokedex()
+  puts @pokemons.inspect
   slim(:index)
 end
 
@@ -51,9 +52,26 @@ get('/pokemons/:name') do
 end
 
 # Search Pokémon
-get('/pokemons/search') do
+get('/search_pokemon') do
+
+  db = db_connection
   query = params[:q].to_s.downcase.strip
-  pokemons = search_pokemon(query)
+
+  pokemons = db.execute <<-SQL, ["%#{query}%"]
+    SELECT Pokemons.id, Pokemons.name, 
+           COALESCE(t1.name, 'Unknown') AS type1, 
+           COALESCE(t2.name, '') AS type2
+    FROM Pokemons
+    LEFT JOIN types t1 ON Pokemons.type1 = t1.id
+    LEFT JOIN types t2 ON Pokemons.type2 = t2.id
+    WHERE LOWER(Pokemons.name) LIKE ?
+  SQL
+
+  pokemons.each do |pokemon|
+    pokemon["image_url"] = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/#{pokemon['id']}.png"
+    pokemon["types"] = pokemon["type2"].empty? ? pokemon["type1"] : "#{pokemon['type1']} / #{pokemon['type2']}"
+  end
+
   content_type :json
   pokemons.to_json
 end

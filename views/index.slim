@@ -6,6 +6,6 @@ h1 Pokédex
     - @pokemons.each do |pokemon|
       .card
         img src=pokemon["image_url"] alt=pokemon["name"] class="pokeimg"
-        a href="/index/#{pokemon["name"].downcase}" = pokemon["name"]
+        a href="/pokemons/#{pokemon["name"].downcase}" = pokemon["name"]
         .card-contents
           p #{pokemon["type1"]}#{'  ' + pokemon["type2"] if pokemon["type2"]}
