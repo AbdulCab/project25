@@ -1,11 +1,14 @@
 
 h1 Pokédex
-
 .section-container
   .cards
     - @pokemons.each do |pokemon|
       .card
         img src=pokemon["image_url"] alt=pokemon["name"] class="pokeimg"
-        a href="/pokemons/#{pokemon["name"].downcase}" = pokemon["name"]
+        a href="/pokemons/#{pokemon["name"].downcase}" style="color: black; text-decoration: none;" = pokemon["name"] 
         .card-contents
-          p #{pokemon["type1"]}#{'  ' + pokemon["type2"] if pokemon["type2"]}
+            .pokemon-types
+              span class="pokemon-type type-#{pokemon['type1']}" = pokemon["type1"]
+              - if pokemon["type2"]
+                  em = " / "
+                  span class="pokemon-type type-#{pokemon['type2']}" = pokemon["type2"]

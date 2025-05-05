@@ -5,7 +5,8 @@ h1 Ditt Team
         - @pokemons.each do |pokemon|
             .team-slot
                 .pokemon-header
-                    h3.slot-name = pokemon["name"]
+                    a href="pokemons/#{pokemon["name"]}" style="color: black; text-decoration: none; font-style: italic;"
+                        h3.slot-name = pokemon["name"]
                     .pokemon-types
                         span class="pokemon-type type-#{pokemon['type1']}" = pokemon["type1"]
                         - if pokemon["type2"]
